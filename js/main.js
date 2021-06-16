@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 // Создание случайных целых чисел в диапазоне
 
@@ -23,9 +23,9 @@ const generateIntegralNum = (min, max) => {
 const findDotNum = (num) => {
   const numArray = Array.from(num);
 
-  for (let i = 0; i < numArray.length; i++) {
-    if (numArray[i] === '.') {
-      return i + 1;
+  for (let id = 0; id < numArray.length; id++) {
+    if (numArray[id] === '.') {
+      return id + 1;
     }
   }
 
@@ -57,5 +57,5 @@ const generateNonIntegralNum = (min, max, numAfterPoint) => {
 
 // Создание случайных чисел с плавающей точкой после запятой END
 
-generateIntegralNum();
-generateNonIntegralNum();
+generateIntegralNum(0, 9);
+generateNonIntegralNum(0, 7, 3);
