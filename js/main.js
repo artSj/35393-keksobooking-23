@@ -175,5 +175,3 @@ const generateOffers = function () {
 // Создание массива предложений END
 
 generateOffers();
-
-console.log(generateOffers());
