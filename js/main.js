@@ -32,58 +32,28 @@ const PIN_QUANTITY = 8;
 
 // Создание случайных целых чисел в диапазоне
 
-const generateIntegralNum = (min, max) => {
+const generateIntegralNum = (a, b) => {
 
-  if (max < min) {
-    return 'Error! Please, write correct max number';
-  }
+  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
+  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
 
-  if (min === max) {
-    return max;
-  }
+  const result = Math.random() * (upper - lower + 1) + lower;
 
-  return Math.floor(min + Math.random() * Math.floor(max - min));
-
+  return Math.floor(result);
 };
 
 // Создание случайных целых чисел в диапазоне END
 
-// Вычисление, сколько цифр в переданном числе до запятой
-
-// const findDotNum = (num) => {
-//   const numArray = Array.from(num);
-//
-//   for (let id = 0; id < numArray.length; id++) {
-//     if (numArray[id] === '.') {
-//       return id + 1;
-//     }
-//   }
-//
-//   return 'Error! There is no dot';
-// };
-
-// Вычисление, сколько цифр в переданном числе до запятой END
-
 // Создание случайных чисел с плавающей точкой после запятой
 
-const generateNonIntegralNum = (min, max, numAfterPoint) => {
+const generateNonIntegralNum = (a, b, numAfterPoint) => {
 
-  if (max < min) {
-    return 'Error! Please, write correct max number';
-  }
+  const lower = Math.min(Math.abs(a), Math.abs(b));
+  const upper = Math.max(Math.abs(a), Math.abs(b));
 
-  if (min === max) {
-    return max;
-  }
+  const result = Math.random() * (upper - lower) + lower;
 
-  if (numAfterPoint < 1) {
-    return 'Error! Please, write correct numAfterPoint';
-  }
-
-  const nonIntegralNum = (min + Math.random() * (max - min)).toString();
-  // const numBeforePoint = findDotNum(nonIntegralNum);
-  // return Number(nonIntegralNum.slice(0, numBeforePoint + numAfterPoint));
-  return Number(nonIntegralNum).toFixed(numAfterPoint);
+  return result.toFixed(numAfterPoint);
 };
 
 // Создание случайных чисел с плавающей точкой после запятой END
@@ -163,8 +133,8 @@ const generateOffers = function () {
         },
       'location':
         {
-          'x': locationX,
-          'y': locationY,
+          'lat': locationX,
+          'lng': locationY,
         },
     };
   }
