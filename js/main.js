@@ -1,5 +1,6 @@
-import {generateOffersArray} from './generate-offers.js';
+import {renderCards} from './markup.js';
+import {deactivatePage, activatePage} from './form.js';
 
-const PIN_QUANTITY = 8;
-
-generateOffersArray(PIN_QUANTITY);
+renderCards();
+deactivatePage();
+activatePage();
