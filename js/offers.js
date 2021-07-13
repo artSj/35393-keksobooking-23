@@ -46,7 +46,7 @@ const generateUrlArray = (amount) => {
   }
 
   for (let i = 0; i < amount; i++) {
-    const number = generateIntegralNum(0, numbersArray.length);
+    const number = generateIntegralNum(0, numbersArray.length - 1);
     const avatarNumber = numbersArray[number];
     avatarNumbersArray[i] = generateUrl(avatarNumber);
     numbersArray.splice(number, 1);
