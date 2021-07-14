@@ -98,9 +98,9 @@ CustomValidation.prototype = {
       const min = input.minLength;
       const diff = min - input.value.length;
 
-      if (diff === 1) {
+      if (diff === 1 || diff === 21) {
         this.addInvalidity(`Нужно ввести ещё ${ diff } символ`);
-      } else if (diff > 1 && diff < 5) {
+      } else if ((diff > 1 && diff < 5) || (diff > 21 && diff < 25)) {
         this.addInvalidity(`Нужно ввести ещё ${ diff } символа`);
       } else {
         this.addInvalidity(`Нужно ввести ещё ${ diff } символов`);
@@ -141,14 +141,14 @@ CustomValidation.prototype = {
   },
 };
 
-const createCustomValMessage = (input) => {
-  const inputCustomValidation = new CustomValidation;
-  inputCustomValidation.setInvalidityBlank();
-  inputCustomValidation.checkValidity(input);
+const createCustomValMessage = (field) => {
+  const fieldCustomValidation = new CustomValidation;
+  fieldCustomValidation.setInvalidityBlank();
+  fieldCustomValidation.checkValidity(field);
 
-  const customValidityMessage = inputCustomValidation.getInvalidities();
+  const customValidityMessage = fieldCustomValidation.getInvalidities();
   if (customValidityMessage.length) {
-    input.insertAdjacentHTML('afterend', `<p class="val_message" style="color: red; font-size: 0.8em;">*${  customValidityMessage  }</p>`);
+    field.insertAdjacentHTML('afterend', `<p class="val_message" style="color: red; font-size: 0.8em;">*${  customValidityMessage  }</p>`);
   }
 };
 
@@ -168,12 +168,14 @@ const changeCapacityAttrs = (capacityArray, options) => {
   for (let i = 0; i < capacityArray.length; i++) {
     capacityArray[i].disabled = false;
     capacityArray[i].selected = false;
+    capacityArray[i].removeAttribute('selected');
     let possibility = false;
 
     for (let j = 0; j < options.length; j++) {
       if (Number(capacityArray[i].value) === Number(options[j])) {
         possibility = true;
         capacityArray[i].selected = true;
+        capacityArray[i].setAttribute('selected', 'selected');
       }
     }
 
@@ -250,33 +252,40 @@ const validateCheckings = () => {
   });
 };
 
+const validateFields = (fieldsArray, evt) => {
+  let stopSubmit;
+
+  for (let i = 0; i < fieldsArray.length; i++) {
+
+    const field = fieldsArray[i];
+
+    if (field.checkValidity() === false) {
+      removeOldCustomValMessages(field);
+      createCustomValMessage(field);
+      stopSubmit = true;
+    } else {
+      removeOldCustomValMessages(field);
+      stopSubmit = false;
+    }
+
+    if (stopSubmit) {
+      evt.preventDefault();
+    }
+  }
+};
+
 const validateForm = () => {
   const roomsSelect = adForm.querySelector('#room_number');
   const roomsSelectVal = roomsSelect.value;
   const capacityArray = adForm.querySelector('#capacity').children;
   const typesSelect = adForm.querySelector('#type');
   const typesSelectVal = typesSelect.value;
-  let stopSubmit = false;
+  const resetBtn = adForm.querySelector('.ad-form__reset');
 
   adFormBtnSubmit.addEventListener('click', (evt) => {
 
-    for (let i = 0; i < adFormInputs.length; i++) {
-
-      const input = adFormInputs[i];
-
-      if (input.checkValidity() === false) {
-        removeOldCustomValMessages(input);
-        createCustomValMessage(input);
-        stopSubmit = true;
-      } else {
-        removeOldCustomValMessages(input);
-        stopSubmit = false;
-      }
-
-      if (stopSubmit) {
-        evt.preventDefault();
-      }
-    }
+    validateFields(adFormInputs, evt);
+    validateFields(adFormSelects, evt);
 
   });
 
@@ -286,7 +295,6 @@ const validateForm = () => {
       createCustomValMessage(adFormInputs[i]);
     });
   }
-
 
   validateRoomsCapacity(roomsSelectVal, capacityArray);
 
@@ -301,6 +309,10 @@ const validateForm = () => {
   });
 
   validateCheckings();
+
+  resetBtn.addEventListener('click', () => {
+    validateRoomsCapacity(roomsSelectVal, capacityArray);
+  });
 
 };
 

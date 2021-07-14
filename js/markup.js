@@ -8,11 +8,10 @@ const TYPE_NAMES = {
   palace: 'Дворец',
   hotel: 'Отель',
 };
-const mapCanvas = document.querySelector('#map-canvas');
-const cardTemplate = document.querySelector('#card').content;
+const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const offers = Array.from(generateOffersArray(PIN_QUANTITY));
 
-const generateCards = (offer) => {
+const generateCard = (offer) => {
   const cardElement = cardTemplate.cloneNode(true);
   let cardRooms = ' комнаты для ';
   let cardGuests = ' гостей';
@@ -94,13 +93,14 @@ const generateCards = (offer) => {
   return cardElement;
 };
 
-const renderCards = () => {
-  const fragmentCard = document.createDocumentFragment();
+const generateCardsArray = () => {
 
-  fragmentCard.appendChild(generateCards(offers[0]));
-
-  mapCanvas.appendChild(fragmentCard);
+  const cardsArray = [];
+  for (let i = 0; i < offers.length; i++) {
+    cardsArray[i] = generateCard(offers[i]);
+  }
+  return cardsArray;
 };
 
-export {renderCards};
+export {offers, generateCardsArray};
 
