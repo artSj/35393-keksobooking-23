@@ -1,7 +1,6 @@
-import {renderCards} from './markup.js';
-import {deactivatePage, activatePage, validateForm} from './form.js';
+import {deactivatePage, validateForm} from './form.js';
+import {initialiseMap} from './map.js';
 
-renderCards();
 deactivatePage();
-activatePage();
+initialiseMap();
 validateForm();
