@@ -1,13 +1,12 @@
-import {offers, generateCardsArray} from './markup.js';
-import {activatePage} from './form.js';
+import {activateForm} from './form.js';
 
 const INITIAL_COORDINATES = {
   lat: 35.681700,
   lng: 139.753891,
 };
+
+const adForm = document.querySelector('.ad-form');
 const myAddress = document.querySelector('#address');
-const resetBtn = document.querySelector('.ad-form__reset');
-const popupElementsArray = generateCardsArray();
 
 const offersMarkerIcon = L.icon({
   iconUrl: '../img/pin.svg',
@@ -21,9 +20,9 @@ const myMarkerIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const renderMarkersArray = () => {
+const renderMarkersArray = (offers, popupElements) => {
 
-  const markersArray = [];
+  const markers = [];
 
   for (let i = 0; i < offers.length; i++) {
     const marker = L.marker(
@@ -36,12 +35,12 @@ const renderMarkersArray = () => {
       },
     );
 
-    marker.bindPopup(popupElementsArray[i]);
+    marker.bindPopup(popupElements[i]);
 
-    markersArray[i] = marker;
+    markers[i] = marker;
   }
 
-  return markersArray;
+  return markers;
 };
 
 const myPin = L.marker(
@@ -58,11 +57,11 @@ const myPin = L.marker(
 const generateInitialAddress = () => myAddress.defaultValue = `${INITIAL_COORDINATES.lat.toFixed(5)  }, ${  myPin._latlng .lng.toFixed(5)}`;
 const generateAddress = (evt) => myAddress.defaultValue = `${evt.target.getLatLng().lat.toFixed(5)  }, ${  evt.target.getLatLng().lng.toFixed(5)}`;
 
-const initialiseMap = () => {
+const initialiseMap = (offersMarkers) => {
 
   const map = L.map('map-canvas')
     .on('load', () => {
-      activatePage();
+      activateForm();
     })
     .setView({
       lat: INITIAL_COORDINATES.lat,
@@ -76,12 +75,11 @@ const initialiseMap = () => {
     },
   ).addTo(map);
 
-  const offersMarkers = renderMarkersArray();
-
-  for (let i = 0; i < offersMarkers.length; i++) {
-    offersMarkers[i]
-      .addTo(map);
-
+  if (offersMarkers) {
+    for (let i = 0; i < offersMarkers.length; i++) {
+      offersMarkers[i]
+        .addTo(map);
+    }
   }
 
   myPin.addTo(map);
@@ -91,7 +89,7 @@ const initialiseMap = () => {
     generateAddress(ev);
   });
 
-  resetBtn.addEventListener('click',  () => {
+  adForm.addEventListener('reset',  () => {
 
     myPin.setLatLng({
       lat: INITIAL_COORDINATES.lat,
@@ -106,7 +104,6 @@ const initialiseMap = () => {
     }, 12);
   });
 
-
 };
 
-export {initialiseMap};
+export {initialiseMap, renderMarkersArray, generateInitialAddress};
