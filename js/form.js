@@ -302,26 +302,25 @@ const validateFields = (fieldsArray, evt) => {
   }
 };
 
-const closeModal = () => {
-  bodyLayout.removeChild(bodyLayout.lastChild);
-  // bodyLayout.removeEventListener('keydown', onPopupEscKeydown);
-};
-
 const onPopupEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
-    closeModal();
+    bodyLayout.removeChild(bodyLayout.lastChild);
+    bodyLayout.removeEventListener('keydown', onPopupEscKeydown);
   }
 };
 
 const openModal = (message) => {
   bodyLayout.appendChild(message);
 
+  bodyLayout.addEventListener('keydown', onPopupEscKeydown);
+
   message.addEventListener('click', () => {
-    closeModal();
+    bodyLayout.removeChild(bodyLayout.lastChild);
+    bodyLayout.removeEventListener('keydown', onPopupEscKeydown);
   });
 
-  bodyLayout.addEventListener('keydown', onPopupEscKeydown);
+
 };
 
 const onLoadSuccess = () => {
