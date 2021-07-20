@@ -26,4 +26,10 @@ const generateNonIntegralNum = (a, b, numAfterPoint) => {
 
 // Создание случайных чисел с плавающей точкой после запятой END
 
-export {generateIntegralNum, generateNonIntegralNum};
+// Распознавание нажатия Esc
+
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+// Распознавание нажатия Esc END
+
+export {generateIntegralNum, generateNonIntegralNum, isEscEvent};

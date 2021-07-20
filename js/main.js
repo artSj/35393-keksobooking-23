@@ -1,6 +1,7 @@
 import {deactivatePage, validateForm} from './form.js';
-import {initialiseMap} from './map.js';
+
+import {getOffers} from './server.js';
 
 deactivatePage();
-initialiseMap();
+getOffers();
 validateForm();
