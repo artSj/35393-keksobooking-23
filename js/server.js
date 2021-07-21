@@ -1,7 +1,7 @@
 import {generateCardsArray} from './markup.js';
 import {initialiseMap, renderMarkersArray} from './map.js';
 import {activateFilter} from './form.js';
-import {debounce} from './utils/debounce.js';
+import {debounce} from './utils.js';
 
 const RERENDER_DELAY = 500;
 
