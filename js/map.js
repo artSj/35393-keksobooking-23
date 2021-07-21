@@ -6,6 +6,7 @@ const INITIAL_COORDINATES = {
 };
 
 const adForm = document.querySelector('.ad-form');
+const mapFilters = document.querySelector('.map__filters');
 const myAddress = document.querySelector('#address');
 
 const offersMarkerIcon = L.icon({
@@ -75,10 +76,12 @@ const initialiseMap = (offersMarkers) => {
     },
   ).addTo(map);
 
+  const markersLayer = L.layerGroup().addTo(map);
+
   if (offersMarkers) {
     for (let i = 0; i < offersMarkers.length; i++) {
       offersMarkers[i]
-        .addTo(map);
+        .addTo(markersLayer);
     }
   }
 
@@ -104,6 +107,26 @@ const initialiseMap = (offersMarkers) => {
     }, 12);
   });
 
+  mapFilters.addEventListener('reset', () => {
+    myPin.setLatLng({
+      lat: INITIAL_COORDINATES.lat,
+      lng: INITIAL_COORDINATES.lng,
+    });
+
+    generateInitialAddress();
+
+    map.setView({
+      lat: INITIAL_COORDINATES.lat,
+      lng: INITIAL_COORDINATES.lng,
+    }, 12);
+
+    for (let i = 0; i < offersMarkers.length; i++) {
+      offersMarkers[i]
+        .addTo(markersLayer);
+    }
+  });
+
+  return markersLayer;
 };
 
 export {initialiseMap, renderMarkersArray, generateInitialAddress};

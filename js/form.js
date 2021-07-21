@@ -15,6 +15,8 @@ const MIN_PRICES = {
   house: 5000,
   palace: 10000,
 };
+const SEND_DATA_URL = 'https://23.javascript.pages.academy/keksobooking';
+
 const adForm = document.querySelector('.ad-form');
 const adFormInputs = adForm.querySelectorAll('input');
 const adFormSelects = adForm.querySelectorAll('select');
@@ -351,7 +353,7 @@ const validateForm = () => {
 
     const formData = new FormData(evt.target);
 
-    fetch('https://23.javascript.pages.academy/keksobooking',
+    fetch(SEND_DATA_URL,
       {
         method: 'POST',
         body: formData,
@@ -392,8 +394,8 @@ const validateForm = () => {
 
   resetBtn.addEventListener('click', () => {
     validateRoomsCapacity(roomsSelectVal, capacityOptions);
+    mapFilters.reset();
   });
-
 };
 
 export {deactivatePage, activateForm, activateFilter, validateForm};
