@@ -120,6 +120,7 @@ const initialiseMap = (offersMarkers) => {
       lng: INITIAL_COORDINATES.lng,
     }, 12);
 
+    markersLayer.clearLayers();
     for (let i = 0; i < offersMarkers.length; i++) {
       offersMarkers[i]
         .addTo(markersLayer);
