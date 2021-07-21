@@ -164,6 +164,7 @@ const renderFilteredOffers = (offers, markersLayer) => {
   }
 
   if (wifiValue || dishwasherValue || parkingValue || washerValue || elevatorValue || conditionerValue) {
+    newOffers = newOffers.filter(getOfferRank);
     newOffers = newOffers.sort(sortOffers);
   }
 
