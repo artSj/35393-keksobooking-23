@@ -394,6 +394,7 @@ const validateForm = () => {
 
   resetBtn.addEventListener('click', () => {
     validateRoomsCapacity(roomsSelectVal, capacityOptions);
+    validateTypeCosts(typesSelectVal);
     mapFilters.reset();
   });
 };
