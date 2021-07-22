@@ -16,6 +16,11 @@ const MIN_PRICES = {
   palace: 10000,
 };
 const SEND_DATA_URL = 'https://23.javascript.pages.academy/keksobooking';
+const SUFFIX_OPTION_1_CRITERIA_1 = 1;
+const SUFFIX_OPTION_1_CRITERIA_2 = 21;
+const SUFFIX_OPTION_2_CRITERIA_1 = 5;
+const SUFFIX_OPTION_2_CRITERIA_2 = 25;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const adForm = document.querySelector('.ad-form');
 const adFormInputs = adForm.querySelectorAll('input');
@@ -34,6 +39,11 @@ const roomsSelect = adForm.querySelector('#room_number');
 const roomsSelectVal = roomsSelect.value;
 const typesSelect = adForm.querySelector('#type');
 const typesSelectVal = typesSelect.value;
+const offerAvatarInput = adForm.querySelector('.ad-form-header__upload input[type=file]');
+const offerAvatarPreview = adForm.querySelector('.ad-form-header__preview');
+const offerAvatarPreviewIco = adForm.querySelector('.ad-form-header__preview img');
+const offerPhotoInput = adForm.querySelector('.ad-form__upload input[type=file]');
+const offerPhotoPreview = adForm.querySelector('.ad-form__photo');
 
 const deactivatePage = () => {
   adForm.classList.add('ad-form--disabled');
@@ -83,8 +93,6 @@ const activateForm = () => {
   for (const btn of adFormBtns) {
     btn.disabled = false;
   }
-
-
 };
 
 const activateFilter = () => {
@@ -100,14 +108,10 @@ const activateFilter = () => {
 };
 
 const createValiditySymbolCountMessage = (diff) => {
-  const SYMBOL_CRIT1 = 1;
-  const SYMBOL_CRIT2 = 21;
-  const SYMBOLA_CRIT1 = 5;
-  const SYMBOLA_CRIT2 = 25;
 
-  if (diff === SYMBOL_CRIT1 || diff === SYMBOL_CRIT2) {
+  if (diff === SUFFIX_OPTION_1_CRITERIA_1 || diff === SUFFIX_OPTION_1_CRITERIA_2) {
     return (`${ diff } символ`);
-  } else if ((diff > SYMBOL_CRIT1 && diff < SYMBOLA_CRIT1) || (diff > SYMBOL_CRIT2 && diff < SYMBOLA_CRIT2)) {
+  } else if ((diff > SUFFIX_OPTION_1_CRITERIA_1 && diff < SUFFIX_OPTION_2_CRITERIA_1) || (diff > SUFFIX_OPTION_1_CRITERIA_2 && diff < SUFFIX_OPTION_2_CRITERIA_2)) {
     return (`${ diff } символа`);
   } else {
     return (`${ diff } символов`);
@@ -321,8 +325,6 @@ const openModal = (message) => {
     bodyLayout.removeChild(bodyLayout.lastChild);
     bodyLayout.removeEventListener('keydown', onPopupEscKeydown);
   });
-
-
 };
 
 const onLoadSuccess = () => {
@@ -337,6 +339,23 @@ const onLoadError = () => {
   const errorMessage = errorMessageTemplate.cloneNode(true);
 
   openModal(errorMessage);
+};
+
+const showPreview = (file, preview, hideIcon) => {
+  const name = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => name.endsWith(it));
+
+  if (matches) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      if (hideIcon) {
+        hideIcon();
+      }
+      preview.style = `background-image: url(${  reader.result}); background-repeat: no-repeat, background-position: center; background-size: cover;`;
+    });
+
+    reader.readAsDataURL(file);
+  }
 };
 
 const validateForm = () => {
@@ -391,6 +410,17 @@ const validateForm = () => {
   });
 
   validateCheckings();
+
+  offerAvatarInput.addEventListener('change', () => {
+    const avatar = offerAvatarInput.files[0];
+    const hideIcon = () => offerAvatarPreviewIco.style = 'opacity: 0;';
+    showPreview(avatar, offerAvatarPreview, hideIcon);
+  });
+
+  offerPhotoInput.addEventListener('change', () => {
+    const photo = offerPhotoInput.files[0];
+    showPreview(photo, offerPhotoPreview);
+  });
 
   resetBtn.addEventListener('click', () => {
     validateRoomsCapacity(roomsSelectVal, capacityOptions);
