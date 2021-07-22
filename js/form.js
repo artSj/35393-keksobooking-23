@@ -358,6 +358,8 @@ const showPreview = (file, preview, hideIcon) => {
   }
 };
 
+const resetPreview = (preview) => preview.style = '';
+
 const validateForm = () => {
   const capacityOptions = adForm.querySelector('#capacity').children;
 
@@ -425,6 +427,9 @@ const validateForm = () => {
   resetBtn.addEventListener('click', () => {
     validateRoomsCapacity(roomsSelectVal, capacityOptions);
     validateTypeCosts(typesSelectVal);
+    offerAvatarPreviewIco.style = 'opacity: 1;';
+    resetPreview(offerAvatarPreview);
+    resetPreview(offerPhotoPreview);
     mapFilters.reset();
   });
 };
